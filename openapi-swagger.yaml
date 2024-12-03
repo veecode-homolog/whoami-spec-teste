@@ -1,0 +1,59 @@
+openapi: 3.0.1
+info:
+  title: VKPR Cluster Overview API
+  description: API to retrieve identity information within the context of the VKPR Platform's cluster experience.
+  version: 1.0.0
+  contact:
+    email: support@vee.codes
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: https://whoami.cluster-overview-experience.vkpr.platform.vee.codes
+    description: Identity endpoint for VKPR cluster experience
+paths:
+  /:
+    get:
+      summary: Retrieve identity information
+      description: Returns information about the authenticated user or service within the cluster context.
+      operationId: getWhoAmI
+      responses:
+        '200':
+          description: Successful operation. Returns identity details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhoAmIResponse'
+        '401':
+          description: Unauthorized. Invalid or missing credentials.
+        '500':
+          description: Internal server error. Issues processing the request.
+components:
+  schemas:
+    WhoAmIResponse:
+      type: object
+      properties:
+        user:
+          type: string
+          description: The username or identifier.
+          example: user@example.com
+        roles:
+          type: array
+          description: List of roles assigned to the identity.
+          items:
+            type: string
+          example: ["admin", "editor"]
+        cluster:
+          type: string
+          description: The name of the cluster associated with the identity.
+          example: "cluster-01"
+        environment:
+          type: string
+          description: The environment where the cluster operates.
+          example: "production"
+        permissions:
+          type: array
+          description: List of permissions granted to the identity.
+          items:
+            type: string
+          example: ["read", "write", "execute"]
